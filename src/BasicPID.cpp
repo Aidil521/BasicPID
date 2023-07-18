@@ -12,7 +12,7 @@ void BasicPID::updatePID(float _value, float _setpoint, float _dt) {
     _deltatime = (_timeNow - _timePrev) / _dt;
 
     // Hitung Nilai Error Proportional (P)
-    _Errors_P = _value - _setpoint;
+    _Errors_P = _setpoint - _value;
     _PID._Proportional = _Errors_P * _PID._KP;
 
     // Hitung Nilai Error Integral (I)
