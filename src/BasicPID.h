@@ -10,6 +10,7 @@ struct PIDvariabel {
    float _Proportional;
    float _Integrator;
    float _Derivative;
+   int _Output;
 };
 class BasicPID {
 public:
@@ -19,11 +20,10 @@ public:
     void resetPID();
 
 private:
-    PIDvariabel PID_system;
+    PIDvariabel _PID;
     float Limit(float val, float min, float max);
     float _timeNow, _timePrev, _deltatime;
     float _Errors_P, _Errors_I, _Errors_D, _Previous_Error;
-    int _PID;
 };
 
 #endif

@@ -1,9 +1,9 @@
 #include <BasicPID.h>
 
 BasicPID::BasicPID(float _kp, float _ki, float _kd) {
-    PID_system._KP = _kp;
-    PID_system._KI = _ki;
-    PID_system._KD = _kd;
+    _PID._KP = _kp;
+    _PID._KI = _ki;
+    _PID._KD = _kd;
 }
 
 void BasicPID::updatePID(float _value, float _setpoint, float _dt) {
@@ -13,15 +13,15 @@ void BasicPID::updatePID(float _value, float _setpoint, float _dt) {
 
     // Hitung Nilai Error Proportional (P)
     _Errors_P = _value - _setpoint;
-    PID_system._Proportional = _Errors_P * PID_system._KP;
+    _PID._Proportional = _Errors_P * _PID._KP;
 
     // Hitung Nilai Error Integral (I)
     _Errors_I += _Errors_P * _deltatime;
-    PID_system._Integrator = _Errors_I * PID_system._KI;
+    _PID._Integrator = _Errors_I * _PID._KI;
 
     // Hitung Nilai Error Derivative (D)
     _Errors_D = (_Errors_P - _Previous_Error) / _deltatime;
-    PID_system._Derivative = _Errors_D * PID_system._KD;
+    _PID._Derivative = _Errors_D * _PID._KD;
 
     // Simpan Nilai Error Proportional (P) sebelumnya
     _Previous_Error = _Errors_P;
@@ -29,14 +29,14 @@ void BasicPID::updatePID(float _value, float _setpoint, float _dt) {
 
 float BasicPID::outputPID(float _min, float _max) {
     // Jumlahkan Nilai P, I dan D
-    _PID = PID_system._Proportional + PID_system._Integrator + PID_system._Derivative;
+    _PID._Output = _PID._Proportional + _PID._Integrator + _PID._Derivative;
     // Limitasi output PID rentang +-400
-    return Limit(_PID, _min, _max);
+    return Limit(_PID._Output, _min, _max);
 }
 
 void BasicPID::resetPID() {
     // Reset Nilai output PID
-    _PID = 0;
+    _PID._Output = 0;
     
     // Reset Nilai Error P
     _Errors_P  = 0;
