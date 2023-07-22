@@ -15,7 +15,7 @@ struct PIDvariabel {
 class BasicPID {
 public:
     BasicPID(float _kp, float _ki, float _kd);
-    void updatePID(float _value, float _setpoint, float _dt = 10000.0);
+    void updatePID(float _value, float _setpoint, float _dt = 1000.0);
     float outputPID(float _min = -400.0, float _max = 400.0);
     void resetPID();
 
