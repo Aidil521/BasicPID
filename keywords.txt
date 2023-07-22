@@ -12,6 +12,7 @@ BasicPID	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
+setPID      KEYWORD2
 updatePID	KEYWORD2
 outputPID	KEYWORD2
 resetPID	KEYWORD2

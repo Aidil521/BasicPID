@@ -1,30 +1,39 @@
 #include <BasicPID.h>
 
-BasicPID::BasicPID(float _kp, float _ki, float _kd) {
+BasicPID::BasicPID(){}
+
+void BasicPID::setPID(float _kp, float _ki, float _kd, float _dt) {
     _PID._KP = _kp;
     _PID._KI = _ki;
     _PID._KD = _kd;
-}
+    _PID._DT = _dt;
 
-void BasicPID::updatePID(float _value, float _setpoint, float _dt) {
     _timePrev = _timeNow;  // simpan nilai waktu sebelumnya
     _timeNow = millis();  // waktu sekarang
-    _deltatime = (_timeNow - _timePrev) / _dt;
+    _deltatime = (_timeNow - _timePrev) / _PID._DT;
+}
 
-    // Hitung Nilai Error Proportional (P)
-    _Errors_P = _setpoint - _value;
-    _PID._Proportional = _Errors_P * _PID._KP;
+void BasicPID::updatePID(float _value, float _setpoint) {
+    _timePrev = _timeNow;  // simpan nilai waktu sebelumnya
+    _timeNow = millis();  // waktu sekarang
+    _timeChange = (_timeNow - _timePrev);
+    _deltatime = _timeChange / _PID._DT;
+    if (_timeChange >= _deltatime) {
+        // Hitung Nilai Error Proportional (P)
+        _Errors_P = _setpoint - _value;
+        _PID._Proportional = _Errors_P * _PID._KP;
 
-    // Hitung Nilai Error Integral (I)
-    _Errors_I += _Errors_P * _deltatime;
-    _PID._Integrator = _Errors_I * _PID._KI;
+        // Hitung Nilai Error Integral (I)
+        _Errors_I += _Errors_P * _deltatime;
+        _PID._Integrator = _Errors_I * (_PID._KI * _deltatime);
 
-    // Hitung Nilai Error Derivative (D)
-    _Errors_D = (_Errors_P - _Previous_Error) / _deltatime;
-    _PID._Derivative = _Errors_D * _PID._KD;
+        // Hitung Nilai Error Derivative (D)
+        _Errors_D = (_Errors_P - _Previous_Error);
+        _PID._Derivative = _Errors_D * (_PID._KD / _deltatime);
 
-    // Simpan Nilai Error Proportional (P) sebelumnya
-    _Previous_Error = _Errors_P;
+        // Simpan Nilai Error Proportional (P) sebelumnya
+        _Previous_Error = _Errors_P;
+    }
 }
 
 float BasicPID::outputPID(float _min, float _max) {
