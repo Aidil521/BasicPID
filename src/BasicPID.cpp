@@ -13,7 +13,7 @@ void BasicPID::setPID(float _kp, float _ki, float _kd, float _dt) {
     _deltatime = (_timeNow - _timePrev) / _PID._DT;
 }
 
-void BasicPID::updatePID(float _value, float _setpoint) {
+void BasicPID::updatePID(float _inertial, float _setpoint) {
     _timeNow = millis();  // waktu sekarang
     _timeChange = (_timeNow - _timePrev);
 
@@ -26,7 +26,7 @@ void BasicPID::updatePID(float _value, float _setpoint) {
     _deltatime = _timeChange / _PID._DT;
 
     // Hitung Nilai Error Proportional (P)
-    _Errors_P = _setpoint - _value;
+    _Errors_P = _setpoint - _inertial;
     _PID._Proportional = _Errors_P * _PID._KP;
 
     // Hitung Nilai Error Integral (I)
@@ -34,8 +34,8 @@ void BasicPID::updatePID(float _value, float _setpoint) {
     _PID._Integrator = Limit((_Errors_I * _PID._KI), -400, 400);
 
     // Hitung Nilai Error Derivative (D)
-    _Errors_D = (_Errors_P - _Previous_Error);
-    _PID._Derivative = _Errors_D * (_PID._KD / _deltatime);
+    _Errors_D = (_Errors_P - _Previous_Error) / _deltatime;
+    _PID._Derivative = _Errors_D * _PID._KD;
 
     // Simpan Nilai Error Proportional (P) sebelumnya
     _Previous_Error = _Errors_P;
