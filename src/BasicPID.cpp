@@ -25,7 +25,7 @@ void BasicPID::updatePID(float _value, float _setpoint) {
 
         // Hitung Nilai Error Integral (I)
         _Errors_I += _Errors_P * _deltatime;
-        _PID._Integrator = _Errors_I * (_PID._KI * _deltatime);
+        _PID._Integrator = Limit(_Errors_I, -400, 400) * _PID._KI;
 
         // Hitung Nilai Error Derivative (D)
         _Errors_D = (_Errors_P - _Previous_Error);
