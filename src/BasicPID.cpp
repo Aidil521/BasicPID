@@ -14,26 +14,31 @@ void BasicPID::setPID(float _kp, float _ki, float _kd, float _dt) {
 }
 
 void BasicPID::updatePID(float _value, float _setpoint) {
-    _timePrev = _timeNow;  // simpan nilai waktu sebelumnya
     _timeNow = millis();  // waktu sekarang
     _timeChange = (_timeNow - _timePrev);
-    _deltatime = _timeChange / _PID._DT;
-    if (_timeChange >= _deltatime) {
-        // Hitung Nilai Error Proportional (P)
-        _Errors_P = _setpoint - _value;
-        _PID._Proportional = _Errors_P * _PID._KP;
 
-        // Hitung Nilai Error Integral (I)
-        _Errors_I += _Errors_P * _deltatime;
-        _PID._Integrator = Limit((_Errors_I * _PID._KI), -400, 400);
-
-        // Hitung Nilai Error Derivative (D)
-        _Errors_D = (_Errors_P - _Previous_Error);
-        _PID._Derivative = _Errors_D * (_PID._KD / _deltatime);
-
-        // Simpan Nilai Error Proportional (P) sebelumnya
-        _Previous_Error = _Errors_P;
+    if (_timeChange > _PID._DT) {
+        // Reset Nilai Error I
+        _Errors_I  = 0;
+        _PID._Integrator = 0;
     }
+    _timePrev = _timeNow;  // simpan nilai waktu sebelumnya
+    _deltatime = _timeChange / _PID._DT;
+
+    // Hitung Nilai Error Proportional (P)
+    _Errors_P = _setpoint - _value;
+    _PID._Proportional = _Errors_P * _PID._KP;
+
+    // Hitung Nilai Error Integral (I)
+    _Errors_I += _Errors_P * _deltatime;
+    _PID._Integrator = Limit((_Errors_I * _PID._KI), -400, 400);
+
+    // Hitung Nilai Error Derivative (D)
+    _Errors_D = (_Errors_P - _Previous_Error);
+    _PID._Derivative = _Errors_D * (_PID._KD / _deltatime);
+
+    // Simpan Nilai Error Proportional (P) sebelumnya
+    _Previous_Error = _Errors_P;
 }
 
 float BasicPID::outputPID(float _min, float _max) {
