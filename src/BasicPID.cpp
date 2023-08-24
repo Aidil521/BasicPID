@@ -61,7 +61,7 @@ void BasicPID::resetPID() {
 }
 
 float BasicPID::Limit(float val, float min, float max) {
-    if (val > max)val = max;
     if (val < min)val = min;
+    if (val > max)val = max;
     return val;
 }
