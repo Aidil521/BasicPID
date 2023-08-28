@@ -13,7 +13,7 @@ void BasicPID::setConfig(float _kp, float _ki, float _kd, float _dt) {
     _deltatime = (_timeNow - _timePrev) / _PID._DT;
 }
 
-void BasicPID::updatePID(float _inertial, float _setpoint) {
+void BasicPID::update(float _inertial, float _setpoint) {
     _timeNow = millis();  // waktu sekarang
     _timeChange = (_timeNow - _timePrev);
 
@@ -41,14 +41,14 @@ void BasicPID::updatePID(float _inertial, float _setpoint) {
     _Previous_Error = _Errors_P;
 }
 
-float BasicPID::outputPID(float _min, float _max) {
+float BasicPID::output(float _min, float _max) {
     // Jumlahkan Nilai P, I dan D
     _PID._Output = _PID._Proportional + _PID._Integrator + _PID._Derivative;
     // Limitasi output PID rentang +-400
     return Limit(_PID._Output, _min, _max);
 }
 
-void BasicPID::resetPID() {
+void BasicPID::reset() {
     // Reset Nilai output PID
     _PID._Output = 0;
     

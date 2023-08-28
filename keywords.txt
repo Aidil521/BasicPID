@@ -13,10 +13,10 @@ PID		KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-setConfig		KEYWORD2
-updatePID	KEYWORD2
-outputPID	KEYWORD2
-resetPID	KEYWORD2
+setConfig	KEYWORD2
+update		KEYWORD2
+output		KEYWORD2
+reset		KEYWORD2
 
 #######################################
 # end

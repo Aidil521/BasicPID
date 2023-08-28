@@ -17,9 +17,9 @@ class BasicPID {
 public:
     BasicPID();
     void setConfig(float _kp, float _ki, float _kd, float _dt = 1000.0);
-    void updatePID(float _value, float _setpoint);
-    float outputPID(float _min = -400.0, float _max = 400.0);
-    void resetPID();
+    void update(float _value, float _setpoint);
+    float output(float _min = -400.0, float _max = 400.0);
+    void reset();
 
 private:
     PIDvariabel _PID;
