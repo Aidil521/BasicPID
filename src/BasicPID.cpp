@@ -2,7 +2,7 @@
 
 BasicPID::BasicPID(){}
 
-void BasicPID::setPID(float _kp, float _ki, float _kd, float _dt) {
+void BasicPID::setConfig(float _kp, float _ki, float _kd, float _dt) {
     _PID._KP = _kp;
     _PID._KI = _ki;
     _PID._KD = _kd;
