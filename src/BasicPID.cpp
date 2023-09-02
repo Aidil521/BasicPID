@@ -2,15 +2,11 @@
 
 BasicPID::BasicPID(){}
 
-void BasicPID::setConfig(float _kp, float _ki, float _kd, float _dt) {
+void BasicPID::setConfig(float _kp, float _ki, float _kd, uint16_t _dt) {
     _PID._KP = _kp;
     _PID._KI = _ki;
     _PID._KD = _kd;
     _PID._DT = _dt;
-
-    _timePrev = _timeNow;  // simpan nilai waktu sebelumnya
-    _timeNow = millis();  // waktu sekarang
-    _deltatime = (_timeNow - _timePrev) / _PID._DT;
 }
 
 void BasicPID::update(float _inertial, float _setpoint) {
@@ -18,7 +14,7 @@ void BasicPID::update(float _inertial, float _setpoint) {
     _timeChange = (_timeNow - _timePrev);
 
     if (_timeChange > _PID._DT) {
-        // Reset Nilai Error I
+        // Reset Value Error I
         _Errors_I  = 0;
         _PID._Integrator = 0;
     }
@@ -31,7 +27,7 @@ void BasicPID::update(float _inertial, float _setpoint) {
 
     // Hitung Nilai Error Integral (I)
     _Errors_I += _Errors_P * _deltatime;
-    _PID._Integrator = Limit((_Errors_I * _PID._KI), -400, 400);
+    _PID._Integrator = Limit((_Errors_I * _PID._KI), -400.0f, 400.0f);
 
     // Hitung Nilai Error Derivative (D)
     _Errors_D = (_Errors_P - _Previous_Error) / _deltatime;

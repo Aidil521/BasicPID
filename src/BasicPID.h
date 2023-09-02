@@ -16,16 +16,17 @@ struct PIDvariabel {
 class BasicPID {
 public:
     BasicPID();
-    void setConfig(float _kp, float _ki, float _kd, float _dt = 1000.0);
+    void setConfig(float _kp, float _ki, float _kd, uint16_t _dt = 1000.0f);
     void update(float _value, float _setpoint);
-    float output(float _min = -400.0, float _max = 400.0);
+    float output(float _min = -400.0f, float _max = 400.0f);
     void reset();
 
 private:
     PIDvariabel _PID;
     float Limit(float val, float min, float max);
-    float _timeNow, _timePrev, _deltatime, _timeChange;
+    float _deltatime;
     float _Errors_P, _Errors_I, _Errors_D, _Previous_Error;
+    uint32_t _timeNow, _timePrev, _timeChange;
 };
 
 #endif
