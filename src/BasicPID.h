@@ -23,7 +23,6 @@ public:
 
 private:
     PIDvariabel _PID;
-    float Limit(float val, float min, float max);
     float _Errors_P, _Errors_I, _Errors_D, _Previous_Error, _deltatime;;
     uint32_t _timeNow, _timePrev, _timeChange;
 };

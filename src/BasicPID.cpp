@@ -9,6 +9,12 @@ void BasicPID::setConfig(float _kp, float _ki, float _kd, uint16_t _dt) {
     _PID._DT = _dt;
 }
 
+float Limit(float val, float min, float max) {
+    if (val < min)val = min;
+    if (val > max)val = max;
+    return val;
+}
+
 void BasicPID::update(float _inertial, float _setpoint) {
     _timeNow = millis();  // waktu sekarang
     _timeChange = (_timeNow - _timePrev);
@@ -59,10 +65,4 @@ void BasicPID::reset() {
 
     // Reset Nilai Previous Error
     _Previous_Error = 0;
-}
-
-float BasicPID::Limit(float val, float min, float max) {
-    if (val < min)val = min;
-    if (val > max)val = max;
-    return val;
 }
