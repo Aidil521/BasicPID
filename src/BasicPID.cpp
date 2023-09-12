@@ -2,17 +2,17 @@
 
 BasicPID::BasicPID(){}
 
+float Limit(float val, float limit) {
+    if (val < -limit)val = -limit;
+    if (val > limit)val = limit;
+    return val;
+}
+
 void BasicPID::setConfig(float _kp, float _ki, float _kd, uint16_t _dt) {
     _PID._KP = _kp;
     _PID._KI = _ki;
     _PID._KD = _kd;
     _PID._DT = _dt;
-}
-
-float Limit(float val, float min, float max) {
-    if (val < min)val = min;
-    if (val > max)val = max;
-    return val;
 }
 
 void BasicPID::update(float _inertial, float _setpoint) {
@@ -33,7 +33,7 @@ void BasicPID::update(float _inertial, float _setpoint) {
 
     // Hitung Nilai Error Integral (I)
     _Errors_I += _Errors_P * _deltatime;
-    _PID._Integrator = Limit((_Errors_I * _PID._KI), -400.0f, 400.0f);
+    _PID._Integrator = Limit((_Errors_I * _PID._KI), 400.0f);
 
     // Hitung Nilai Error Derivative (D)
     _Errors_D = (_Errors_P - _Previous_Error) / _deltatime;
@@ -43,17 +43,17 @@ void BasicPID::update(float _inertial, float _setpoint) {
     _Previous_Error = _Errors_P;
 }
 
-float BasicPID::output(float _min, float _max) {
+float BasicPID::output(float _limit) {
     // Jumlahkan Nilai P, I dan D
     _PID._Output = _PID._Proportional + _PID._Integrator + _PID._Derivative;
     // Limitasi output PID rentang +-400
-    return Limit(_PID._Output, _min, _max);
+    return Limit(_PID._Output, _limit);
 }
 
 void BasicPID::reset() {
     // Reset Nilai output PID
     _PID._Output = 0;
-    
+
     // Reset Nilai Error P
     _Errors_P  = 0;
 
