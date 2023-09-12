@@ -19,7 +19,7 @@ public:
     BasicPID();
     void setConfig(float _kp, float _ki, float _kd, uint16_t _dt = 1000);
     void update(float _value, float _setpoint);
-    int16_t output(float _limit = 400.0f);
+    int16_t output(float _limit = 400);
     void reset();
 
 private:
