@@ -7,11 +7,11 @@ struct PIDvariabel {
     float _KP;
     float _KI;
     float _KD;
+    float _DT;
     float _Proportional;
     float _Integrator;
     float _Derivative;
     int16_t _Output;
-    uint16_t _DT;
 };
 
 class BasicPID {
@@ -19,7 +19,7 @@ public:
     BasicPID();
     void setConfig(float _kp, float _ki, float _kd, uint16_t _dt = 1000);
     void update(float _value, float _setpoint);
-    float output(float _limit = 400.0f);
+    int16_t output(float _limit = 400.0f);
     void reset();
 
 private:
